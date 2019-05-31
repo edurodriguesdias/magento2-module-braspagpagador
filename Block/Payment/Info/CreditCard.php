@@ -60,9 +60,12 @@ class CreditCard extends Info
         $installments = $this->paymentInfo->getAdditionalInformation('cc_installments');
         $amountAuthorized = $this->paymentInfo->getAmountAuthorized();
         $priceFormatted = $this->getPriceHelper()->currency($amountAuthorized, true, false);
-        $time = count($installments) > 1 ? 'times' : 'time';
 
-        return __('%1 Splitted in %2 '. $time, $priceFormatted, $installments);
+        if (is_array($installments)) {
+            $time = count($installments) > 1 ? 'times' : 'time';
+
+            return __('%1 Splitted in %2 ' . $time, $priceFormatted, $installments);
+        }
     }
 
     protected function getPriceHelper()
